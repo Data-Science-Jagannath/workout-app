@@ -1,33 +1,69 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { BlurView } from 'expo-blur';
+import { View, Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarStyle: {
+          position: 'absolute',
+          backgroundColor: '#121212E6',
+          borderTopWidth: 0,
+          elevation: 0,
+          height: 60,
+          paddingTop: 8,
+          paddingBottom: 8,
+        },
+        tabBarActiveTintColor: '#39FF14',
+        tabBarInactiveTintColor: '#888',
+        tabBarBackground: () => (
+          Platform.OS === 'ios' ? (
+            <BlurView tint="dark" intensity={80} style={StyleSheet.absoluteFill} />
+          ) : (
+            <View style={{ flex: 1, backgroundColor: '#121212FA' }} />
+          )
+        ),
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => <Ionicons size={24} name={focused ? 'home' : 'home-outline'} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="templates"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Templates',
+          tabBarIcon: ({ color, focused }) => <Ionicons size={24} name={focused ? 'fitness' : 'fitness-outline'} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="timer"
+        options={{
+          title: 'Timer',
+          tabBarIcon: ({ color, focused }) => <Ionicons size={24} name={focused ? 'timer' : 'timer-outline'} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="library"
+        options={{
+          title: 'Library',
+          tabBarIcon: ({ color, focused }) => <Ionicons size={24} name={focused ? 'library' : 'library-outline'} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color, focused }) => <Ionicons size={24} name={focused ? 'bar-chart' : 'bar-chart-outline'} color={color} />,
         }}
       />
     </Tabs>
